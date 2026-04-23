@@ -37,6 +37,46 @@ def main() -> None:
     
     print(f"Wallet: {wallet}")
     print(f"Saldo BNB: {saldo_bnb} BNB")
+    
+
+    token_address = os.getenv("TOKEN_ADDRESS")
+    if not token_address:
+        print("Variavel TOKEN_ADDRESS nao encontrada no .env")
+        sys.exit(1)
+        
+    token = Web3.to_checksum_address(token_address)
+    
+    ERC20_ABI = [
+        {          
+            "constant": True,
+            "inputs": [{"name": "_owner", "type": "address"}],
+            "name": "balanceOf",
+            "outputs": [{"name": "balance", "type": "uint256"}],
+            "type": "function",
+        },
+        {
+            "constant": True,
+            "inputs": [],
+            "name": "decimals",
+            "outputs": [{"name": "", "type": "uint8"}],
+            "type": "function",
+        },
+        {
+            "constant": True,
+            "inputs": [],
+            "name": "symbol",
+            "outputs": [{"name": "", "type": "string"}],
+            "type": "function",
+        },
+    ]
+
+    contrato = w3.eth.contract(address=token, abi=ERC20_ABI)    
+    symbol = contrato.functions.symbol().call()
+    decimals = contrato.functions.decimals().call() 
+    saldo_raw = contrato.functions.balanceOf(wallet).call()
+    saldo_token = saldo_raw / 10**decimals
+    
+    print(f"Saldo Token: {saldo_token} {symbol}")
 
 
 if __name__ == "__main__":
