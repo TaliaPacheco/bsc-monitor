@@ -1,14 +1,14 @@
- # Python
- venv/
-  __pycache__/
-  *.pyc
+# Python
+venv/
+__pycache__/
+*.pyc
   
-  # Env
-  .env
+# Env
+.env
   
-  # Editores
-  .vscode/
-  .idea/
+# Editores
+.vscode/
+.idea/
 
-  # Sistema
-  .DS_Store 
+# Sistema
+.DS_Store 
